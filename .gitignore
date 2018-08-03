@@ -2,6 +2,9 @@
 *.pyc
 .ipynb_checkpoints
 
+# API Credentials
+secrets.txt
+
 # Data
 *.csv
 *.json

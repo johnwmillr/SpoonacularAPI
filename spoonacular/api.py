@@ -16,10 +16,7 @@ class API(object):
 
     # Create a persistent requests connection
     session = requests.Session()
-    session.headers = {
-        "Application": "PySpoon",
-        "Content-Type": "application/x-www-form-urlencoded",
-        "Accept": "application/json"}
+    session.headers = {"Application": "PySpoon","Content-Type": "application/x-www-form-urlencoded","Accept": "application/json"}
 
     def __init__(self, api_key, format_='json', timeout=5, sleep_time=1.5):
         """ Spoonacular API Constructor
@@ -34,30 +31,30 @@ class API(object):
         self.session.headers["X-Mashape-Key"] = self.API_KEY
         self.api_root = "https://spoonacular-recipe-food-nutrition-v1.p.mashape.com/"
         self.timeout = timeout
-        self._sleep_time = sleep_time
+        self.sleep_time = sleep_time
 
-    def _make_request(self, path, method='GET', params_=None):
+    def _make_request(self, path, method='GET', query_=None, params_=None):
         """Make a request to the API"""
 
         uri = self.api_root + path
-        if params_:
-            params_['text_format'] = self.FORMAT
-        else:
-            params_ = {'text_format': self.FORMAT}
-
-        # Make the request
+        print(uri)
+        print(query_)
+        print(params_)
+        print(self.session.headers)
         try:
             response = self.session.request(method.upper(), uri,
                                             timeout=self.timeout,
+                                            data=query_,
                                             params=params_)
         except socket.timeout as e:
             print("Timeout raised and caught: {}".format(e))
 
         assert response.status_code == 200, "API response is not 200: {r}".format(r=response.reason)
         time.sleep(self.sleep_time)
-        return response.json()['response']
+        return response
 
     def parse_ingredients(self, ingredientList, servings=1, includeNutrition=False):
-        endpoint = "recipes/parseIngredients?includeNutrition={val}".format(val=includeNutrition)
-        params = {"ingredientList": ingredientList, "servings": servings}
-        return self._make_request(endpoint, method='POST', params_=params)
+        endpoint = "recipes/parseIngredients"
+        query = {"ingredientList": ingredientList, "servings": servings}
+        params = {"includeNutrition": includeNutrition}
+        return self._make_request(endpoint, method='POST', query_=query, params_=params)
