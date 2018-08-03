@@ -1,0 +1,12 @@
+# Python / Jupyter
+*.pyc
+.ipynb_checkpoints
+
+# Data
+*.csv
+*.json
+*.txt
+*.pickle
+
+# macOS
+.DS_Store
