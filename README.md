@@ -1,7 +1,7 @@
 # Python wrapper for the Spoonacular API 🥄🍎
 This Python wrapper makes it easy to download data from [Spoonacular's](https://spoonacular.com/) marvelous food and recipes API.
 
-I'll be adding support for additional endpoints as I have time.
+I'm relying heavily on my [DocScraper](https://github.com/johnwmillr/DocScraper) code to generate the Python files in this wrapper. I'll be adding support for additional endpoints as I have time.
 
 ## Usage
 ```python
@@ -22,6 +22,7 @@ print(data)
 ## Documentation
  - [Spoonacular website](https://spoonacular.com/food-api)
  - [Mashape API demo](https://market.mashape.com/spoonacular/recipe-food-nutrition)
+ - [DocScraper](https://github.com/johnwmillr/DocScraper)
 
 ## Collaboration
 Please feel free to collaborate with a pull request or by opening an issue.
