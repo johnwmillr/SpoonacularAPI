@@ -25,7 +25,7 @@ print(data)
 
 ## Documentation
  - [Spoonacular website](https://spoonacular.com/food-api)
- - [Mashape API demo](https://market.mashape.com/spoonacular/recipe-food-nutrition)
+ - [RapidAPI](https://rapidapi.com/spoonacular/api/Recipe%20-%20Food%20-%20Nutrition)
  - [DocScraper](https://github.com/johnwmillr/DocScraper)
 
 ## Collaboration
