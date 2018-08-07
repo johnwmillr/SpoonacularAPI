@@ -25,7 +25,7 @@ class API(object):
 
         :param api_key: key provided by Spoonacular
         :param timeout: time before quitting on response (seconds)
-        :param sleep_time: time to wait between requests
+        :param sleep_time: time to wait between requests (seconds)
         """
 
         assert api_key != '', 'Must supply a non-empty API key.'
@@ -33,30 +33,35 @@ class API(object):
         self.session.headers["X-Mashape-Key"] = self.API_KEY
         self.api_root = "https://spoonacular-recipe-food-nutrition-v1.p.mashape.com/"
         self.timeout = timeout
-        self.sleep_time = sleep_time
+        self.sleep_time = max(sleep_time, 1)  # Rate limiting
+        self.calls_remaining = None  # TODO: make this work good
 
     def _make_request(self, path, method='GET', query_=None, params_=None):
         """Make a request to the API"""
 
-        uri = self.api_root + path
+        assert (self.calls_remaining is None or self.calls_remaining > 1), "No free API calls remaining."
         try:
+            uri = self.api_root + path
             response = self.session.request(method, uri,
                                             timeout=self.timeout,
                                             data=query_,
                                             params=params_)
         except socket.timeout as e:
             print("Timeout raised and caught: {}".format(e))
+            return
 
-        assert response.status_code == 200, "API response is not 200: {r}".format(r=response.reason)
-
-        w = 5
-        calls_remaining = int(response.headers['X-RateLimit-requests-Remaining'])
-        if calls_remaining < w:
+        # Warn user if their free API calls are running out
+        self.calls_remaining = int(response.headers['X-RateLimit-requests-Remaining'])
+        if self.calls_remaining < 5:
             print('\n\n---*** *** *** *** WARNING *** *** *** ***---')
-            print('      ONLY {n} FREE API CALLS REMAINING'.format(n=calls_remaining))
+            print('      ONLY {n} FREE API CALLS REMAINING'.format(n=self.calls_remaining))
             print('---*** *** *** *** WARNING *** *** *** ***---\n\n')
 
-        time.sleep(self.sleep_time)
+        # Check for bad response from API
+        if response.status_code != 200:
+            print("\n*WARNING*:\nAPI response is not 200: {r}".format(r=response.reason))
+
+        time.sleep(self.sleep_time)  # Enforce rate limiting
         return response
 
     """ EXTRACT Endpoints """
@@ -71,7 +76,8 @@ class API(object):
         return self._make_request(endpoint, method="GET", query_=query, params_=params)
 
     def analyze_recipe_instructions(self, instructions):
-        """ Extract ingredients and equipment from the recipe instruction steps.
+        """ Extract ingredients and equipment from the recipe instruction
+            steps.
             https://market.mashape.com/spoonacular/recipe-food-nutrition#analyze-recipe-instructions
         """
         endpoint = "recipes/analyzeInstructions"
