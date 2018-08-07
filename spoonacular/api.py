@@ -76,8 +76,7 @@ class API(object):
         return self._make_request(endpoint, method="GET", query_=query, params_=params)
 
     def analyze_recipe_instructions(self, instructions):
-        """ Extract ingredients and equipment from the recipe instruction
-            steps.
+        """ Extract ingredients and equipment from the recipe instruction steps.
             https://market.mashape.com/spoonacular/recipe-food-nutrition#analyze-recipe-instructions
         """
         endpoint = "recipes/analyzeInstructions"
@@ -187,7 +186,8 @@ class API(object):
         return self._make_request(endpoint, method="GET", query_=query, params_=params)
 
     def get_wine_description(self, wine):
-        """ Get the description of a certain wine, e.g. "malbec" or "riesling"
+        """ Get the description of a certain wine, e.g. "malbec",
+            "riesling", or "merlot".
             https://market.mashape.com/spoonacular/recipe-food-nutrition#get-wine-description
         """
         endpoint = "food/wine/description"
@@ -196,8 +196,9 @@ class API(object):
         return self._make_request(endpoint, method="GET", query_=query, params_=params)
 
     def get_wine_pairing(self, food, maxPrice=None):
-        """ Find a wine that goes well with a food. Food can be a dish name ("steak"),
-            an ingredient name ("salmon"), or a cuisine ("italian").
+        """ Find a wine that goes well with a food. Food can be
+            a dish name ("steak"), an ingredient name ("salmon"),
+            or a cuisine ("italian").
             https://market.mashape.com/spoonacular/recipe-food-nutrition#get-wine-pairing
         """
         endpoint = "food/wine/pairing"
@@ -206,8 +207,8 @@ class API(object):
         return self._make_request(endpoint, method="GET", query_=query, params_=params)
 
     def get_wine_recommendation(self, wine, maxPrice=None, minRating=None, number=None):
-        """ Get a specific wine recommendation (concrete product) for a given wine, e.g.
-            "merlot".
+        """ Get a specific wine recommendation (concrete product)
+            for a given wine, e.g. "merlot".
             https://market.mashape.com/spoonacular/recipe-food-nutrition#get-wine-recommendation
         """
         endpoint = "food/wine/recommendation"
@@ -225,9 +226,9 @@ class API(object):
         return self._make_request(endpoint, method="GET", query_=query, params_=params)
 
     def search_recipes_by_ingredients(self, ingredients, fillIngredients=None, limitLicense=None, number=None, ranking=None):
-        """ Find recipes that use as many of the given ingredients as possible and have
-            as little as possible missing ingredients. This is a whats in your fridge
-            API endpoint.
+        """ Find recipes that use as many of the given ingredients
+            as possible and have as little as possible missing
+            ingredients. This is a whats in your fridge API endpoint.
             https://market.mashape.com/spoonacular/recipe-food-nutrition#search-recipes-by-ingredients
         """
         endpoint = "recipes/findByIngredients"
@@ -236,9 +237,10 @@ class API(object):
         return self._make_request(endpoint, method="GET", query_=query, params_=params)
 
     def search_site_content(self, query):
-        """ Search spoonacular's site content. You'll be able to find everything that
-            you could also find using the search suggests on spoonacular.com. This
-            is a suggest API so you can send partial strings as queries.
+        """ Search spoonacular's site content. You'll be able to
+            find everything that you could also find using the
+            search suggests on spoonacular.com. This is a suggest
+            API so you can send partial strings as queries.
             https://market.mashape.com/spoonacular/recipe-food-nutrition#search-site-content
         """
         endpoint = "food/site/search"

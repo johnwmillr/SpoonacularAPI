@@ -17,6 +17,8 @@ class TestAPI(unittest.TestCase):
         print("\n---------------------\nSetting up {} API tests...\n".format("Spoonacular"))
         cls.api = api
 
+    """ EXTRACT Endpoints """
+
     def test_analyze_a_recipe_search_query(self):
         """Test the 'analyze a recipe search query' endpoint (GET)"""
         msg = "Response status is not 200"
@@ -50,4 +52,104 @@ class TestAPI(unittest.TestCase):
         msg = "Response status is not 200"
         testArgs = {'ingredientList': '3 oz pork shoulder', 'servings': '2', 'includeNutrition': 'false'}
         response = self.api.parse_ingredients(**testArgs)
+        self.assertEqual(response.status_code, 200, msg)
+
+    """ SEARCH Endpoints """
+
+    def test_autocomplete_ingredient_search(self):
+        """Test the 'autocomplete ingredient search' endpoint (GET)"""
+        msg = "Response status is not 200"
+        testArgs = {'intolerances': 'egg', 'metaInformation': 'false', 'number': '10', 'query': 'appl'}
+        response = self.api.autocomplete_ingredient_search(**testArgs)
+        self.assertEqual(response.status_code, 200, msg)
+
+    def test_autocomplete_recipe_search(self):
+        """Test the 'autocomplete recipe search' endpoint (GET)"""
+        msg = "Response status is not 200"
+        testArgs = {'number': '10', 'query': 'chicken'}
+        response = self.api.autocomplete_recipe_search(**testArgs)
+        self.assertEqual(response.status_code, 200, msg)
+
+    def test_get_comparable_products(self):
+        """Test the 'get comparable products' endpoint (GET)"""
+        msg = "Response status is not 200"
+        testArgs = {'upc': '033698816271'}
+        response = self.api.get_comparable_products(**testArgs)
+        self.assertEqual(response.status_code, 200, msg)
+
+    def test_get_dish_pairing_for_wine(self):
+        """Test the 'get dish pairing for wine' endpoint (GET)"""
+        msg = "Response status is not 200"
+        testArgs = {'wine': 'merlot'}
+        response = self.api.get_dish_pairing_for_wine(**testArgs)
+        self.assertEqual(response.status_code, 200, msg)
+
+    def test_get_ingredient_substitutes(self):
+        """Test the 'get ingredient substitutes' endpoint (GET)"""
+        msg = "Response status is not 200"
+        testArgs = {'ingredientName': 'butter'}
+        response = self.api.get_ingredient_substitutes(**testArgs)
+        self.assertEqual(response.status_code, 200, msg)
+
+    def test_get_ingredient_substitutes_by_id(self):
+        """Test the 'get ingredient substitutes by id' endpoint (GET)"""
+        msg = "Response status is not 200"
+        testArgs = {'id': '1001'}
+        response = self.api.get_ingredient_substitutes_by_id(**testArgs)
+        self.assertEqual(response.status_code, 200, msg)
+
+    def test_get_random_recipes(self):
+        """Test the 'get random recipes' endpoint (GET)"""
+        msg = "Response status is not 200"
+        testArgs = {'limitLicense': 'false', 'number': '1', 'tags': 'vegetarian,dessert'}
+        response = self.api.get_random_recipes(**testArgs)
+        self.assertEqual(response.status_code, 200, msg)
+
+    def test_get_similar_recipes(self):
+        """Test the 'get similar recipes' endpoint (GET)"""
+        msg = "Response status is not 200"
+        testArgs = {'id': '156992'}
+        response = self.api.get_similar_recipes(**testArgs)
+        self.assertEqual(response.status_code, 200, msg)
+
+    def test_get_wine_description(self):
+        """Test the 'get wine description' endpoint (GET)"""
+        msg = "Response status is not 200"
+        testArgs = {'wine': 'malbec'}
+        response = self.api.get_wine_description(**testArgs)
+        self.assertEqual(response.status_code, 200, msg)
+
+    def test_get_wine_pairing(self):
+        """Test the 'get wine pairing' endpoint (GET)"""
+        msg = "Response status is not 200"
+        testArgs = {'food': 'steak', 'maxPrice': '50'}
+        response = self.api.get_wine_pairing(**testArgs)
+        self.assertEqual(response.status_code, 200, msg)
+
+    def test_get_wine_recommendation(self):
+        """Test the 'get wine recommendation' endpoint (GET)"""
+        msg = "Response status is not 200"
+        testArgs = {'maxPrice': '50', 'minRating': '0.7', 'number': '3', 'wine': 'merlot'}
+        response = self.api.get_wine_recommendation(**testArgs)
+        self.assertEqual(response.status_code, 200, msg)
+
+    def test_search_grocery_products_by_upc(self):
+        """Test the 'search grocery products by upc' endpoint (GET)"""
+        msg = "Response status is not 200"
+        testArgs = {'upc': '041631000564'}
+        response = self.api.search_grocery_products_by_upc(**testArgs)
+        self.assertEqual(response.status_code, 200, msg)
+
+    def test_search_recipes_by_ingredients(self):
+        """Test the 'search recipes by ingredients' endpoint (GET)"""
+        msg = "Response status is not 200"
+        testArgs = {'fillIngredients': 'false', 'ingredients': 'apples,flour,sugar', 'limitLicense': 'false', 'number': '5', 'ranking': '1'}
+        response = self.api.search_recipes_by_ingredients(**testArgs)
+        self.assertEqual(response.status_code, 200, msg)
+
+    def test_search_site_content(self):
+        """Test the 'search site content' endpoint (GET)"""
+        msg = "Response status is not 200"
+        testArgs = {'query': 'past'}
+        response = self.api.search_site_content(**testArgs)
         self.assertEqual(response.status_code, 200, msg)
