@@ -21,7 +21,7 @@ class API(object):
                        "X-Mashape-Host": "spoonacular-recipe-food-nutrition-v1.p.mashape.com"
                        }
 
-    def __init__(self, api_key, format_='json', timeout=5, sleep_time=1.5):
+    def __init__(self, api_key, timeout=5, sleep_time=1.5):
         """ Spoonacular API Constructor
 
         :param api_key: key provided by Spoonacular
@@ -38,7 +38,11 @@ class API(object):
         self.remaining_requests = None  # TODO: make this work good
         self.last_response = None  # Keep track of most recent API response
 
-    def _make_request(self, path, method='GET', query_=None, params_=None):
+    def _make_request(self, path,
+                      method='GET',
+                      query_=None,
+                      params_=None,
+                      json_=None):
         """Make a request to the API"""
 
         assert (self.remaining_requests is None or self.remaining_requests > 1), "No free API calls remaining."
@@ -47,7 +51,8 @@ class API(object):
             response = self.session.request(method, uri,
                                             timeout=self.timeout,
                                             data=query_,
-                                            params=params_)
+                                            params=params_,
+                                            json=json_)
         except socket.timeout as e:
             print("Timeout raised and caught: {}".format(e))
             return
@@ -70,15 +75,14 @@ class API(object):
 
     """ --------------- Compute Endpoints --------------- """
 
-    def classify_a_grocery_product(self):
+    def classify_a_grocery_product(self, product):
         """ Given a grocery product title, this endpoint allows
             you to detect what basic ingredient it is.
             https://market.mashape.com/spoonacular/recipe-food-nutrition#classify-a-grocery-product
         """
         endpoint = "food/products/classify"
-        url_query = {}
-        url_params = {}
-        return self._make_request(endpoint, method="POST", query_=url_query, params_=url_params)
+        url_json = product
+        return self._make_request(endpoint, method="POST", json_=url_json)
 
     def classify_cuisine(self, ingredientList, title):
         """ Classify the recipe's cuisine.
@@ -89,14 +93,13 @@ class API(object):
         url_params = {}
         return self._make_request(endpoint, method="POST", query_=url_query, params_=url_params)
 
-    def classify_grocery_products_batch(self):
+    def classify_grocery_products_batch(self, products):
         """ Given a set of product jsons, get back classified products.
             https://market.mashape.com/spoonacular/recipe-food-nutrition#classify-grocery-products-(batch)
         """
         endpoint = "food/products/classifyBatch"
-        url_query = {}
-        url_params = {}
-        return self._make_request(endpoint, method="POST", query_=url_query, params_=url_params)
+        url_json = products
+        return self._make_request(endpoint, method="POST", json_=url_json)
 
     def convert_amounts(self, ingredientName, targetUnit, sourceAmount=None, sourceUnit=None):
         """ Convert amounts like "2 cups of flour to grams".
@@ -126,15 +129,14 @@ class API(object):
         url_params = {"title": title}
         return self._make_request(endpoint, method="GET", query_=url_query, params_=url_params)
 
-    def map_ingredients_to_grocery_products(self):
+    def map_ingredients_to_grocery_products(self, ingredients, servings):
         """ Map a set of ingredients to products you can buy in
             the grocery store.
             https://market.mashape.com/spoonacular/recipe-food-nutrition#map-ingredients-to-grocery-products
         """
         endpoint = "food/ingredients/map"
-        url_query = {}
-        url_params = {}
-        return self._make_request(endpoint, method="POST", query_=url_query, params_=url_params)
+        url_json = {"ingredients": ingredients, "servings": servings}
+        return self._make_request(endpoint, method="POST", json_=url_json)
 
     def match_recipes_to_daily_calories(self, targetCalories, timeFrame):
         """ Find multiple recipes that, when added up reach your

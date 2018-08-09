@@ -22,7 +22,8 @@ class TestAPI(unittest.TestCase):
     def test_classify_a_grocery_product(self):
         """Test the 'classify a grocery product' endpoint (POST)"""
         msg = "Response status is not 200"
-        testArgs = {}
+        testArgs = {'product': {"title": "Kroger Vitamin A & D Reduced Fat 2% Milk",
+                    "upc": "", "plu_code": ""}}
         response = self.api.classify_a_grocery_product(**testArgs)
         self.assertEqual(response.status_code, 200, msg)
 
@@ -36,7 +37,8 @@ class TestAPI(unittest.TestCase):
     def test_classify_grocery_products_batch(self):
         """Test the 'classify grocery products (batch)' endpoint (POST)"""
         msg = "Response status is not 200"
-        testArgs = {}
+        testArgs = {'products': [{"title": "Kroger Vitamin A & D Reduced Fat 2% Milk",
+                    "upc": "", "plu_code": ""}]}
         response = self.api.classify_grocery_products_batch(**testArgs)
         self.assertEqual(response.status_code, 200, msg)
 
@@ -64,7 +66,7 @@ class TestAPI(unittest.TestCase):
     def test_map_ingredients_to_grocery_products(self):
         """Test the 'map ingredients to grocery products' endpoint (POST)"""
         msg = "Response status is not 200"
-        testArgs = {}
+        testArgs = {"ingredients": ["eggs", "bacon"], "servings": 2}
         response = self.api.map_ingredients_to_grocery_products(**testArgs)
         self.assertEqual(response.status_code, 200, msg)
 
@@ -287,7 +289,7 @@ class TestAPI(unittest.TestCase):
     def test_get_recipe_information_bulk(self):
         """Test the 'get recipe information bulk' endpoint (GET)"""
         msg = "Response status is not 200"
-        testArgs = {'ids': '456,987,321', 'includeNutrition': 'false'}
+        testArgs = {'ids': '987,321', 'includeNutrition': 'false'}
         response = self.api.get_recipe_information_bulk(**testArgs)
         self.assertEqual(response.status_code, 200, msg)
 
