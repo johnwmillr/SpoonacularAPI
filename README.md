@@ -7,6 +7,15 @@ This Python wrapper makes it easy to download data from [Spoonacular's](https://
 
 I'm relying heavily on my [DocScraper](https://github.com/johnwmillr/DocScraper) code to generate the Python files in this wrapper. I'll be adding support for additional endpoints as I have time.
 
+## Installation
+Clone the repository and install the ackage with these steps:
+1. Clone this repo:
+`$git clone https://github.com/johnwmillr/SpoonacularAPI.git`
+2. Enter the cloned directory:
+`$cd SpoonacularAPI`
+3. Install:
+`$python setup.py install`
+
 ## Usage
 ```python
 import spoonacular as sp
