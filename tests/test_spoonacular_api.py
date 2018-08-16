@@ -7,7 +7,7 @@ api_key_name = "SPOONACULAR_API_KEY"
 api_key = os.environ.get(api_key_name, None)
 assert api_key is not None, "Must declare environment variable: {key_name}".format(
     key_name=api_key_name)
-api = api.API(api_key, timeout=5, sleep_time=2)
+api = api.API(api_key, timeout=5, sleep_time=0.5)
 
 
 class TestAPI(unittest.TestCase):

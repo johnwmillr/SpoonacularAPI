@@ -18,8 +18,7 @@ class API(object):
     session = requests.Session()
     session.headers = {"Application": "PySpoon",
                        "Content-Type": "application/x-www-form-urlencoded",
-                       "X-Mashape-Host": "spoonacular-recipe-food-nutrition-v1.p.mashape.com"
-                       }
+                       "X-Mashape-Host": "spoonacular-recipe-food-nutrition-v1.p.mashape.com"}
 
     def __init__(self, api_key, timeout=5, sleep_time=1.5):
         """ Spoonacular API Constructor
@@ -30,22 +29,21 @@ class API(object):
         """
 
         assert api_key != '', 'Must supply a non-empty API key.'
-        self.API_KEY = api_key
-        self.session.headers["X-Mashape-Key"] = self.API_KEY
+        self.api_key = api_key
+        self.session.headers["X-Mashape-Key"] = self.api_key
         self.api_root = "https://spoonacular-recipe-food-nutrition-v1.p.mashape.com/"
         self.timeout = timeout
         self.sleep_time = max(sleep_time, 1)  # Rate limiting
-        self.remaining_requests = None  # TODO: make this work good
-        self.last_response = None  # Keep track of most recent API response
+        self.callsRemaining = self.getRemainingCalls()
 
     def _make_request(self, path,
                       method='GET',
                       query_=None,
                       params_=None,
                       json_=None):
-        """Make a request to the API"""
+        """ Make a request to the API """
 
-        assert (self.remaining_requests is None or self.remaining_requests > 1), "No free API calls remaining."
+        assert self.apiCallsRemain, "No free API calls remaining."
         try:
             uri = self.api_root + path
             response = self.session.request(method, uri,
@@ -58,20 +56,28 @@ class API(object):
             return
 
         # Warn user if their API calls are running out
-        # TODO: write method to check the other quotas in the header as well
-        self.remaining_requests = int(response.headers['X-RateLimit-requests-Remaining'])
-        if self.remaining_requests < 5:
-            print('\n\n---*** *** *** *** WARNING *** *** *** ***---')
-            print('      ONLY {n} API CALLS REMAINING'.format(n=self.remaining_requests))
-            print('---*** *** *** *** WARNING *** *** *** ***---\n\n')
-
-        # Check for bad response from API
-        if response.status_code != 200:
-            print("\n*WARNING*:\nAPI response: ({c}) '{r}'".format(c=response.status_code,
-                                                                   r=response.reason))
+        self.callsRemaining = self.extractRemainingCallsFromHeader(response.headers)
         time.sleep(self.sleep_time)  # Enforce rate limiting
-        self.last_response = response
         return response
+
+    def getRemainingCalls(self):
+        """ Returns the remaining number of API requests, results, etc. """
+        return self.extractRemainingCallsFromHeader(self.session.request('get', self.api_root).headers)
+
+    def extractRemainingCallsFromHeader(self, headers):
+        """ Extracts the remaining number of API calls from the headers"""
+        return {'requests': headers['X-RateLimit-requests-Remaining'],
+                'responses': headers['X-RateLimit-results-Remaining'],
+                'tinyrequests': headers['X-RateLimit-tinyrequests-Remaining']}
+
+    @property
+    def minCallsRemaining(self):
+        return min([int(val) for val in self.callsRemaining.values()])
+
+    @property
+    def apiCallsRemain(self):
+        """ Returns False if any category of API request has run out """
+        return self.minCallsRemaining > 1
 
     """ --------------- Compute Endpoints --------------- """
 
@@ -481,7 +487,7 @@ class API(object):
         url_params = {"forceExtraction": forceExtraction, "url": url}
         return self._make_request(endpoint, method="GET", query_=url_query, params_=url_params)
 
-    def parse_ingredients(self, ingredientList, servings, includeNutrition=None):
+    def parse_ingredients(self, ingredientList, servings=1, includeNutrition=None):
         """ Extract an ingredient from plain text.
             https://market.mashape.com/spoonacular/recipe-food-nutrition#parse-ingredients
         """
