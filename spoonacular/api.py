@@ -34,7 +34,7 @@ class API(object):
         self.api_root = "https://spoonacular-recipe-food-nutrition-v1.p.mashape.com/"
         self.timeout = timeout
         self.sleep_time = max(sleep_time, 1)  # Rate limiting
-        self.callsRemaining = self.getRemainingCalls()
+        self.callsRemaining = self.getRemainingCallsFromApi()
 
     def _make_request(self, path,
                       method='GET',
@@ -43,7 +43,8 @@ class API(object):
                       json_=None):
         """ Make a request to the API """
 
-        assert self.apiCallsRemain, "No free API calls remaining."
+        # TODO: I should write a specific NO_API_CALLS_REMAINING error
+        assert not self.callsHaveRunOut, "No free API calls remaining."
         try:
             uri = self.api_root + path
             response = self.session.request(method, uri,
@@ -56,30 +57,31 @@ class API(object):
             return
 
         # Warn user if their API calls are running out
-        self.callsRemaining = self.extractRemainingCallsFromHeader(response.headers)
+        self.callsRemaining = self.getRemainingCallsFromHeader(response.headers)
         time.sleep(self.sleep_time)  # Enforce rate limiting
         return response
 
-    def getRemainingCalls(self):
-        """ Returns the remaining number of API requests, results, etc. """
-        return self.extractRemainingCallsFromHeader(self.session.request('get', self.api_root).headers)
-
-    def extractRemainingCallsFromHeader(self, headers):
+    def getRemainingCallsFromHeader(self, headers):
         """ Extracts the remaining number of API calls from the headers"""
         return {'requests': headers['X-RateLimit-requests-Remaining'],
                 'responses': headers['X-RateLimit-results-Remaining'],
                 'tinyrequests': headers['X-RateLimit-tinyrequests-Remaining']}
 
-    @property
+    def getRemainingCallsFromApi(self):
+        """ Returns the remaining number of API requests, results, etc. """
+        self.callsRemaining = self.getRemainingCallsFromHeader(self.session.request('get', self.api_root).headers)
+        return self.callsRemaining
+
+    @property  # Not sure if this should be a property
     def minCallsRemaining(self):
         return min([int(val) for val in self.callsRemaining.values()])
 
-    @property
-    def apiCallsRemain(self):
+    @property  # Not sure if this should be a property
+    def callsHaveRunOut(self):
         """ Returns False if any category of API request has run out """
-        return self.minCallsRemaining > 1
+        return self.minCallsRemaining <= 1
 
-    """ --------------- Compute Endpoints --------------- """
+    """ --------------- COMPUTE Endpoints --------------- """
 
     def classify_a_grocery_product(self, product):
         """ Given a grocery product title, this endpoint allows
@@ -217,7 +219,7 @@ class API(object):
         url_params = {"defaultCss": defaultCss}
         return self._make_request(endpoint, method="GET", query_=url_query, params_=url_params)
 
-    """ --------------- Search Endpoints --------------- """
+    """ --------------- SEARCH Endpoints --------------- """
 
     def autocomplete_ingredient_search(self, query, intolerances=None, metaInformation=None, number=None):
         """ Autocomplete a search for an ingredient.
@@ -354,7 +356,7 @@ class API(object):
         url_params = {"query": query}
         return self._make_request(endpoint, method="GET", query_=url_query, params_=url_params)
 
-    """ --------------- Chat Endpoints --------------- """
+    """ --------------- CHAT Endpoints --------------- """
 
     def get_conversation_suggests(self, query, number=None):
         """ This endpoint returns suggestions for things the user
@@ -378,7 +380,7 @@ class API(object):
         url_params = {"contextId": contextId, "text": text}
         return self._make_request(endpoint, method="GET", query_=url_query, params_=url_params)
 
-    """ --------------- Data Endpoints --------------- """
+    """ --------------- DATA Endpoints --------------- """
 
     def get_a_random_food_joke(self):
         """ Get a random joke that includes or is about food.
@@ -448,7 +450,7 @@ class API(object):
         url_params = {"ids": ids, "includeNutrition": includeNutrition}
         return self._make_request(endpoint, method="GET", query_=url_query, params_=url_params)
 
-    """ --------------- Extract Endpoints --------------- """
+    """ --------------- EXTRACT Endpoints --------------- """
 
     def analyze_a_recipe_search_query(self, q):
         """ Parse a recipe search query to find out its intention.
