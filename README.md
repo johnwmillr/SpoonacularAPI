@@ -1,11 +1,11 @@
-# Python wrapper for the Spoonacular API 🥄🍎
+# spoonacular 🥄🍎
 ---
 [![Build Status](https://travis-ci.org/johnwmillr/SpoonacularAPI.svg?branch=master)](https://travis-ci.org/johnwmillr/SpoonacularAPI)
 ![Python version](https://img.shields.io/badge/python-3.x-brightgreen.svg)
 
-This Python wrapper makes it easy to download data from [Spoonacular's](https://spoonacular.com/) marvelous food and recipes API.
+Want to parse a list of [ingredients](https://rapidapi.com/spoonacular/api/Recipe%20-%20Food%20-%20Nutrition/functions/Parse%20Ingredients) within a recipe? Or are you looking for a random [food joke](https://rapidapi.com/spoonacular/api/Recipe%20-%20Food%20-%20Nutrition/functions/Get%20a%20Random%20Food%20Joke)?
 
-I'm relying heavily on my [DocScraper](https://github.com/johnwmillr/DocScraper) code to generate the Python files in this wrapper. I'll be adding support for additional endpoints as I have time.
+`spoonacular` provides a simple Python interface to the marvelous food and recipes API from [Spoonacular](https://spoonacular.com/).
 
 ## Installation
 Clone the repository and install the ackage with these steps:
@@ -39,4 +39,3 @@ print(data)
 
 ## Collaboration
 Please feel free to collaborate with a pull request or by opening an issue.
-

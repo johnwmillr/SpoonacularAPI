@@ -44,7 +44,7 @@ class API(object):
         """ Make a request to the API """
 
         # TODO: I should write a specific NO_API_CALLS_REMAINING error
-        assert not self.callsHaveRunOut, "No free API calls remaining."
+        assert self.haveCallsRemaining, "No free API calls remaining."
         try:
             uri = self.api_root + path
             response = self.session.request(method, uri,
@@ -77,9 +77,9 @@ class API(object):
         return min([int(val) for val in self.callsRemaining.values()])
 
     @property  # Not sure if this should be a property
-    def callsHaveRunOut(self):
+    def haveCallsRemaining(self):
         """ Returns False if any category of API request has run out """
-        return self.minCallsRemaining <= 1
+        return self.minCallsRemaining >= 10
 
     """ --------------- COMPUTE Endpoints --------------- """
 
