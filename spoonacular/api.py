@@ -20,12 +20,13 @@ class API(object):
                        "Content-Type": "application/x-www-form-urlencoded",
                        "X-Mashape-Host": "spoonacular-recipe-food-nutrition-v1.p.mashape.com"}
 
-    def __init__(self, api_key, timeout=5, sleep_time=1.5):
+    def __init__(self, api_key, timeout=5, sleep_time=1.5, allow_extra_calls=False):
         """ Spoonacular API Constructor
 
-        :param api_key: key provided by Spoonacular
+        :param api_key: key provided by Spoonacular (str)
         :param timeout: time before quitting on response (seconds)
         :param sleep_time: time to wait between requests (seconds)
+        :param allow_extra_calls: override the API call limit (bool)
         """
 
         assert api_key != '', 'Must supply a non-empty API key.'
@@ -35,6 +36,7 @@ class API(object):
         self.timeout = timeout
         self.sleep_time = max(sleep_time, 1)  # Rate limiting
         self.callsRemaining = self.getRemainingCallsFromApi()
+        self.allow_extra_calls = allow_extra_calls
 
     def _make_request(self, path,
                       method='GET',
@@ -44,7 +46,7 @@ class API(object):
         """ Make a request to the API """
 
         # TODO: I should write a specific NO_API_CALLS_REMAINING error
-        assert self.haveCallsRemaining, "No free API calls remaining."
+        assert (self.haveCallsRemaining or self.allow_extra_calls), "No free API calls remaining."
         try:
             uri = self.api_root + path
             response = self.session.request(method, uri,
