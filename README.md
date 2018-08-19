@@ -1,11 +1,9 @@
-# spoonacular 🥄🍎
+# 🥄 spoonacular 🥄
 ---
 [![Build Status](https://travis-ci.org/johnwmillr/SpoonacularAPI.svg?branch=master)](https://travis-ci.org/johnwmillr/SpoonacularAPI)
 ![Python version](https://img.shields.io/badge/python-3.x-brightgreen.svg)
 
-Want to parse a list of [ingredients](https://rapidapi.com/spoonacular/api/Recipe%20-%20Food%20-%20Nutrition/functions/Parse%20Ingredients) within a recipe? Or are you looking for a random [food joke](https://rapidapi.com/spoonacular/api/Recipe%20-%20Food%20-%20Nutrition/functions/Get%20a%20Random%20Food%20Joke)? These are just two of many endpoints provided by the [Spoonacular](https://spoonacular.com/) food and recipes API.
-
-`spoonacular` provides a simple Python interface to this marvelous API.
+Want to parse a list of [ingredients](https://rapidapi.com/spoonacular/api/Recipe%20-%20Food%20-%20Nutrition/functions/Parse%20Ingredients) within a recipe? Or are you looking for a random [food joke](https://rapidapi.com/spoonacular/api/Recipe%20-%20Food%20-%20Nutrition/functions/Get%20a%20Random%20Food%20Joke)? These are just two of many endpoints provided by the marvelous [Spoonacular](https://spoonacular.com/) food and recipes API. `spoonacular` provides a simple Python interface to this API.
 
 ## Installation
 Clone the repository and install the package with these steps:
@@ -14,22 +12,37 @@ Clone the repository and install the package with these steps:
 2. Enter the cloned directory:
 `$cd SpoonacularAPI`
 3. Install:
-`$python setup.py install`
+    `$python setup.py install`
 
 ## Usage
+
+### API Key
+
+You'll need to sign up for an account on [RapidAPI](https://rapidapi.com/spoonacular/api/Recipe%20-%20Food%20-%20Nutrition/pricing) to start using `spoonacular`. Spoonacular is a freemium API, so you'll be able to start with 50 free calls a day. Registration requires a credit card number even for the free plan, because users are charged a small amount per call if they go over the daily limit. This package has a basic system in place to try and prevent overrage charges.
+
+### Examples
+
 ```python
 import spoonacular as sp
 api = sp.API("your_api_key_here")
 
 # Parse an ingredient
 response = api.parse_ingredients("3.5 cups King Arthur flour", servings=1)
-data = response.json()[0]
-print(data['name'])
+data = response.json()
+print(data[0]['name'])
+>>>"flour"
 
 # Detect text for mentions of food
 response = api.detect_food_in_text("I really want a cheeseburger.")
-data = response.json()[0]
-print(data)
+data = response.json()
+print(data['annotations'][0])
+>>>{"annotation": "cheeseburger", "tag":"dish"}
+
+# Get a random food joke
+response = api.get_a_random_food_joke()
+data = response.json()
+print(data['text'])
+>>>"People are a lot less judgy when you say you ate an 'avocado salad' instead of a bowl of guacamole."
 ```
 
 ## Documentation
