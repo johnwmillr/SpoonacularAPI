@@ -6,7 +6,14 @@
 Want to parse a list of [ingredients](https://rapidapi.com/spoonacular/api/Recipe%20-%20Food%20-%20Nutrition/functions/Parse%20Ingredients) within a recipe? Or are you looking for a random [food joke](https://rapidapi.com/spoonacular/api/Recipe%20-%20Food%20-%20Nutrition/functions/Get%20a%20Random%20Food%20Joke)? These are just two of many endpoints provided by the marvelous [Spoonacular](https://spoonacular.com/) food and recipes API. `spoonacular` provides a simple Python interface to this API.
 
 ## Installation
-Clone the repository and install the package with these steps:
+The easiest way to start using this package is to install it via [PyPI](https://pypi.python.org/pypi/spoonacular) using `pip`:
+
+`$pip install spoonacular`
+
+Thank you for [@sebbekarlsson](https://github.com/sebbekarlsson) for transferring ownership of the original PyPI package name.
+
+If you'd prefer to clone and install the repository manually, follow these steps:
+
 1. Clone this repo:
 `$git clone https://github.com/johnwmillr/SpoonacularAPI.git`
 2. Enter the cloned directory:

@@ -11,5 +11,10 @@ secrets.txt
 *.txt
 *.pickle
 
+# PyPI
+build
+dist
+spoonacular.egg-info
+
 # macOS
 .DS_Store
