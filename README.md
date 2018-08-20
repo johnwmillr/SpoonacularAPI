@@ -11,7 +11,7 @@ The easiest way to start using this package is to install it via [PyPI](https://
 
 `$pip install spoonacular`
 
-Thank you for [@sebbekarlsson](https://github.com/sebbekarlsson) for transferring ownership of the original PyPI package name.
+Thank you to [@sebbekarlsson](https://github.com/sebbekarlsson) for transferring ownership of the original PyPI package name.
 
 If you'd prefer to clone and install the repository manually, follow these steps:
 
