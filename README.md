@@ -1,7 +1,8 @@
 # 🥄 spoonacular 🥄
 ---
 [![Build Status](https://travis-ci.org/johnwmillr/SpoonacularAPI.svg?branch=master)](https://travis-ci.org/johnwmillr/SpoonacularAPI)
-![Python version](https://img.shields.io/badge/python-3.x-brightgreen.svg)
+[![PyPI version](https://badge.fury.io/py/spoonacular.svg)](https://pypi.org/project/spoonacular/)
+[![Python version](https://img.shields.io/badge/python-3.x-brightgreen.svg)](https://pypi.org/project/spoonacular/)
 
 Want to parse a list of [ingredients](https://rapidapi.com/spoonacular/api/Recipe%20-%20Food%20-%20Nutrition/functions/Parse%20Ingredients) within a recipe? Or are you looking for a random [food joke](https://rapidapi.com/spoonacular/api/Recipe%20-%20Food%20-%20Nutrition/functions/Get%20a%20Random%20Food%20Joke)? These are just two of many endpoints provided by the marvelous [Spoonacular](https://spoonacular.com/) food and recipes API. `spoonacular` provides a simple Python interface to this API.
 
