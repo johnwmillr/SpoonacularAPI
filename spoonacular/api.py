@@ -16,7 +16,7 @@ class API(object):
 
     # Create a persistent requests connection
     session = requests.Session()
-    session.headers = {"Application": "PySpoon",
+    session.headers = {"Application": "spoonacular",
                        "Content-Type": "application/x-www-form-urlencoded",
                        "X-Mashape-Host": "spoonacular-recipe-food-nutrition-v1.p.mashape.com"}
 
