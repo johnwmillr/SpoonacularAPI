@@ -408,8 +408,8 @@ endpoint_quotas = {
       "qualifier": ""
     },
     "results": {
-      "amount": 1,
-      "qualifier": "per result"
+      "amount": 10,
+      "qualifier": ""
     }
   },
   "search_food_videos": {
@@ -469,7 +469,7 @@ endpoint_quotas = {
     },
     "results": {
       "amount": 1,
-      "qualifier": "per result"
+      "qualifier": ""
     }
   },
   "search_recipes": {

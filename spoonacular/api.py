@@ -93,7 +93,7 @@ class API(object):
 
     def determineCostOfEndpoint(self, endpoint, **kwargs):
         """ Returns the amount of each type of quota a particular endpoint call will use up"""
-        if endpoint in self.endpoint_quotas or True:
+        if endpoint in self.endpoint_quotas:
             quotas = self.endpoint_quotas[endpoint]
 
             # Determine the total cost (in API quotas) for the API call
