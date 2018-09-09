@@ -5,10 +5,9 @@
 """
 Spoonacular APIs library
 """
-__version__ = '2.0.1'
+__version__ = '2.2.0'
 __author__ = 'John W. Miller'
 __description__ = 'A Python wrapper for the Spoonacular API'
 __license__ = 'MIT'
 
-import sys
 from .api import API
