@@ -43,7 +43,7 @@ class API(object):
         self.session.headers["X-Mashape-Key"] = self.api_key
         self.api_root = "https://spoonacular-recipe-food-nutrition-v1.p.mashape.com/"
         self.timeout = timeout
-        self.sleep_time = max(sleep_time, 1)  # Rate limiting
+        self.sleep_time = max(sleep_time, 1)  # Rate limiting TODO: Make this immutable
         self.callsRemaining = self.getRemainingCallsFromApi()
         self.allow_extra_calls = allow_extra_calls
 
@@ -53,12 +53,10 @@ class API(object):
 
         # Check if the API call cost will exceed the quota
         endpoint = inspect.stack()[1].function
-        if endpoint:
-            call_cost = self.determineCostOfEndpoint(endpoint, query=query_, params=params_, json=json_)
-            assert (self.costIsLessThanRemaining(call_cost) or self.allow_extra_calls), "No free API calls remaining."
-        else:
-            # TODO: I should write a specific NO_API_CALLS_REMAINING error
-            assert (self.haveCallsRemaining or self.allow_extra_calls), "No free API calls remaining."
+        call_cost = self.determineCostOfEndpoint(endpoint, query=query_, params=params_, json=json_)
+        assert (self.costIsLessThanRemaining(call_cost) or self.allow_extra_calls), "No free API calls remaining."
+        # TODO: I should write a specific NO_API_CALLS_REMAINING error
+        # assert (self.haveCallsRemaining or self.allow_extra_calls), "No free API calls remaining."
 
         try:
             uri = self.api_root + path
@@ -95,13 +93,13 @@ class API(object):
 
     def determineCostOfEndpoint(self, endpoint, **kwargs):
         """ Returns the amount of each type of quota a particular endpoint call will use up"""
-        if endpoint in self.endpoint_quotas:
+        if endpoint in self.endpoint_quotas or True:
             quotas = self.endpoint_quotas[endpoint]
 
             # Determine the total cost (in API quotas) for the API call
             cost = {}
             for quota in ['requests', 'tinyrequests', 'results']:
-                amount, qualifier = int(quotas[quota]['amount']), quotas[quota]['qualifier']
+                amount, qualifier = quotas[quota]['amount'], quotas[quota]['qualifier']
                 if qualifier in ['per ingredient']:
                     ingredients = kwargs['json']['ingredients']
                     ingredients = [ingredients] if isinstance(ingredients, str) else ingredients
@@ -114,6 +112,9 @@ class API(object):
                     cost[quota] = amount * len(kwargs['query']['ingredientList'].split('\n'))
                 elif qualifier in ['per result']:
                     cost[quota] = amount * int(kwargs['params']['number'])
+                elif qualifier in ['per wine found']:
+                    # TODO: Contact Spoonacular about this quota info
+                    cost[quota] = amount * 3*int(kwargs['params']['number'])
                 else:
                     cost[quota] = amount
             return cost
