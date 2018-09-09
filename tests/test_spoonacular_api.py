@@ -17,6 +17,15 @@ class TestAPI(unittest.TestCase):
         print("\n---------------------\nSetting up {} API tests...\n".format("Spoonacular"))
         cls.api = api
 
+    def test_quota_restrictions(self):
+        """ Test that the proper amounts are set """
+        msg = "Quota amount does not matched specified number"
+        name = 'parse_ingredients'
+        ingredients = {'ingredientList': '1 pound of bacon\n3 apples'}
+        response = self.api.determineCostOfEndpoint(name, query=ingredients)
+        expected = {'requests': 1, 'tinyrequests': 0, 'results': 2}
+        self.assertEqual(response, expected, msg)
+
     """ --------------- Compute Endpoints --------------- """
 
     def test_classify_a_grocery_product(self):
