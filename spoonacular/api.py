@@ -9,10 +9,19 @@ API details and documentation: https://spoonacular.com/food-api
 import requests
 import socket
 import time
+import inspect
+
+
+def formatMethodName(name):
+    name = name.lower().replace('(', '').replace(')', '')
+    return name.replace(' ', '_')
 
 
 class API(object):
     """Spoonacular API"""
+
+    # Endpoint
+    from .endpoint_quotas import endpoint_quotas
 
     # Create a persistent requests connection
     session = requests.Session()
@@ -38,15 +47,19 @@ class API(object):
         self.callsRemaining = self.getRemainingCallsFromApi()
         self.allow_extra_calls = allow_extra_calls
 
-    def _make_request(self, path,
-                      method='GET',
-                      query_=None,
-                      params_=None,
-                      json_=None):
+    def _make_request(self, path, method='GET', endpoint=None,
+                      query_=None, params_=None, json_=None):
         """ Make a request to the API """
 
-        # TODO: I should write a specific NO_API_CALLS_REMAINING error
-        assert (self.haveCallsRemaining or self.allow_extra_calls), "No free API calls remaining."
+        # Check if the API call cost will exceed the quota
+        endpoint = inspect.stack()[1].function
+        if endpoint:
+            call_cost = self.determineCostOfEndpoint(endpoint, query=query_, params=params_, json=json_)
+            assert (self.costIsLessThanRemaining(call_cost) or self.allow_extra_calls), "No free API calls remaining."
+        else:
+            # TODO: I should write a specific NO_API_CALLS_REMAINING error
+            assert (self.haveCallsRemaining or self.allow_extra_calls), "No free API calls remaining."
+
         try:
             uri = self.api_root + path
             response = self.session.request(method, uri,
@@ -58,21 +71,53 @@ class API(object):
             print("Timeout raised and caught: {}".format(e))
             return
 
-        # Warn user if their API calls are running out
         self.callsRemaining = self.getRemainingCallsFromHeader(response.headers)
         time.sleep(self.sleep_time)  # Enforce rate limiting
         return response
 
     def getRemainingCallsFromHeader(self, headers):
         """ Extracts the remaining number of API calls from the headers"""
-        return {'requests': headers['X-RateLimit-requests-Remaining'],
-                'responses': headers['X-RateLimit-results-Remaining'],
-                'tinyrequests': headers['X-RateLimit-tinyrequests-Remaining']}
+        return {'requests': int(headers['X-RateLimit-requests-Remaining']),
+                'tinyrequests': int(headers['X-RateLimit-tinyrequests-Remaining']),
+                'results': int(headers['X-RateLimit-results-Remaining'])}
 
     def getRemainingCallsFromApi(self):
         """ Returns the remaining number of API requests, results, etc. """
         self.callsRemaining = self.getRemainingCallsFromHeader(self.session.request('get', self.api_root).headers)
         return self.callsRemaining
+
+    def costIsLessThanRemaining(self, cost_of_call):
+        """ Checks if the cost of a call is more than the amount remaining """
+        for category in ['requests', 'tinyrequests', 'results']:
+            if cost_of_call[category] > (self.callsRemaining[category] - 5):
+                return False
+        return True
+
+    def determineCostOfEndpoint(self, endpoint, **kwargs):
+        """ Returns the amount of each type of quota a particular endpoint call will use up"""
+        if endpoint in self.endpoint_quotas:
+            quotas = self.endpoint_quotas[endpoint]
+
+            # Determine the total cost (in API quotas) for the API call
+            cost = {}
+            for quota in ['requests', 'tinyrequests', 'results']:
+                amount, qualifier = int(quotas[quota]['amount']), quotas[quota]['qualifier']
+                if qualifier in ['per ingredient']:
+                    ingredients = kwargs['json']['ingredients']
+                    ingredients = [ingredients] if isinstance(ingredients, str) else ingredients
+                    cost[quota] = amount * len(ingredients)
+                elif qualifier in ['per recipe']:
+                    cost[quota] = amount * len(kwargs['params']['ids'].split(','))
+                elif qualifier in ['per product']:
+                    cost[quota] = amount * len(kwargs['json'])
+                elif qualifier in ['per parsed ingredient']:
+                    cost[quota] = amount * len(kwargs['query']['ingredientList'].split('\n'))
+                elif qualifier in ['per result']:
+                    cost[quota] = amount * int(kwargs['params']['number'])
+                else:
+                    cost[quota] = amount
+            return cost
+        return None
 
     @property  # Not sure if this should be a property
     def minCallsRemaining(self):
@@ -92,6 +137,7 @@ class API(object):
         """
         endpoint = "food/products/classify"
         url_json = product
+        quota = {'requests': 0, 'tinyrequests': 1, 'results': 0}
         return self._make_request(endpoint, method="POST", json_=url_json)
 
     def classify_cuisine(self, ingredientList, title):
