@@ -26,8 +26,7 @@ class API(object):
     # Create a persistent requests connection
     session = requests.Session()
     session.headers = {"Application": "spoonacular",
-                       "Content-Type": "application/x-www-form-urlencoded",
-                       "X-Mashape-Host": "spoonacular-recipe-food-nutrition-v1.p.mashape.com"}
+                       "Content-Type": "application/x-www-form-urlencoded"}
 
     def __init__(self, api_key, timeout=5, sleep_time=1.5, allow_extra_calls=False):
         """ Spoonacular API Constructor
@@ -40,11 +39,9 @@ class API(object):
 
         assert api_key != '', 'Must supply a non-empty API key.'
         self.api_key = api_key
-        self.session.headers["X-Mashape-Key"] = self.api_key
-        self.api_root = "https://spoonacular-recipe-food-nutrition-v1.p.mashape.com/"
+        self.api_root = "https://api.spoonacular.com/"
         self.timeout = timeout
         self.sleep_time = max(sleep_time, 1)  # Rate limiting TODO: Make this immutable
-        self.callsRemaining = self.getRemainingCallsFromApi()
         self.allow_extra_calls = allow_extra_calls
 
     def _make_request(self, path, method='GET', endpoint=None,
@@ -53,13 +50,14 @@ class API(object):
 
         # Check if the API call cost will exceed the quota
         endpoint = inspect.stack()[1].function
-        call_cost = self.determineCostOfEndpoint(endpoint, query=query_, params=params_, json=json_)
-        assert (self.costIsLessThanRemaining(call_cost) or self.allow_extra_calls), "No free API calls remaining."
-        # TODO: I should write a specific NO_API_CALLS_REMAINING error
-        # assert (self.haveCallsRemaining or self.allow_extra_calls), "No free API calls remaining."
-
         try:
             uri = self.api_root + path
+
+            # API auth (temporary kludge)
+            if params_:
+                params_['apiKey'] = self.api_key
+            else:
+                params_ = {'apiKey': self.api_key}
             response = self.session.request(method, uri,
                                             timeout=self.timeout,
                                             data=query_,
@@ -68,8 +66,6 @@ class API(object):
         except socket.timeout as e:
             print("Timeout raised and caught: {}".format(e))
             return
-
-        self.callsRemaining = self.getRemainingCallsFromHeader(response.headers)
         time.sleep(self.sleep_time)  # Enforce rate limiting
         return response
 
@@ -81,7 +77,12 @@ class API(object):
 
     def getRemainingCallsFromApi(self):
         """ Returns the remaining number of API requests, results, etc. """
-        self.callsRemaining = self.getRemainingCallsFromHeader(self.session.request('get', self.api_root).headers)
+        headers = self.session.request('get', self.api_root).headers
+        print(headers.keys())
+        print()
+        print(headers)
+        print()
+        self.callsRemaining = self.getRemainingCallsFromHeader(headers)
         return self.callsRemaining
 
     def costIsLessThanRemaining(self, cost_of_call):
