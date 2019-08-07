@@ -298,7 +298,7 @@ class TestAPI(unittest.TestCase):
     def test_get_recipe_information_bulk(self):
         """Test the 'get recipe information bulk' endpoint (GET)"""
         msg = "Response status is not 200"
-        testArgs = {'ids': '987,321', 'includeNutrition': 'false'}
+        testArgs = {'ids': ['715538,716429'], 'includeNutrition': False}
         response = self.api.get_recipe_information_bulk(**testArgs)
         self.assertEqual(response.status_code, 200, msg)
 
