@@ -131,7 +131,7 @@ class TestAPI(unittest.TestCase):
     def test_visualize_recipe_nutrition_by_id(self):
         """Test the 'visualize recipe nutrition by id' endpoint (GET)"""
         msg = "Response status is not 200"
-        testArgs = {'defaultCss': 'false', 'id': '1003464'}
+        testArgs = {'defaultCss': False, 'id': '1003464'}
         response = self.api.visualize_recipe_nutrition_by_id(**testArgs)
         self.assertEqual(response.status_code, 200, msg)
 
@@ -140,7 +140,7 @@ class TestAPI(unittest.TestCase):
     def test_autocomplete_ingredient_search(self):
         """Test the 'autocomplete ingredient search' endpoint (GET)"""
         msg = "Response status is not 200"
-        testArgs = {'intolerances': 'egg', 'metaInformation': 'false', 'number': '10', 'query': 'appl'}
+        testArgs = {'intolerances': 'egg', 'metaInformation': False, 'number': '10', 'query': 'appl'}
         response = self.api.autocomplete_ingredient_search(**testArgs)
         self.assertEqual(response.status_code, 200, msg)
 
@@ -182,7 +182,7 @@ class TestAPI(unittest.TestCase):
     def test_get_random_recipes(self):
         """Test the 'get random recipes' endpoint (GET)"""
         msg = "Response status is not 200"
-        testArgs = {'limitLicense': 'false', 'number': '1', 'tags': 'vegetarian,dessert'}
+        testArgs = {'limitLicense': False, 'number': '1', 'tags': 'vegetarian,dessert'}
         response = self.api.get_random_recipes(**testArgs)
         self.assertEqual(response.status_code, 200, msg)
 
@@ -224,7 +224,7 @@ class TestAPI(unittest.TestCase):
     def test_search_recipes_by_ingredients(self):
         """Test the 'search recipes by ingredients' endpoint (GET)"""
         msg = "Response status is not 200"
-        testArgs = {'fillIngredients': 'false', 'ingredients': 'apples,flour,sugar', 'limitLicense': 'false', 'number': '5', 'ranking': '1'}
+        testArgs = {'fillIngredients': False, 'ingredients': 'apples,flour,sugar', 'limitLicense': False, 'number': '5', 'ranking': '1'}
         response = self.api.search_recipes_by_ingredients(**testArgs)
         self.assertEqual(response.status_code, 200, msg)
 
@@ -291,7 +291,7 @@ class TestAPI(unittest.TestCase):
     def test_get_recipe_information(self):
         """Test the 'get recipe information' endpoint (GET)"""
         msg = "Response status is not 200"
-        testArgs = {'id': '479101', 'includeNutrition': 'false'}
+        testArgs = {'id': '479101', 'includeNutrition': False}
         response = self.api.get_recipe_information(**testArgs)
         self.assertEqual(response.status_code, 200, msg)
 
@@ -328,13 +328,13 @@ class TestAPI(unittest.TestCase):
     def test_extract_recipe_from_website(self):
         """Test the 'extract recipe from website' endpoint (GET)"""
         msg = "Response status is not 200"
-        testArgs = {'forceExtraction': 'false', 'url': 'http://www.melskitchencafe.com/the-best-fudgy-brownies/'}
+        testArgs = {'forceExtraction': False, 'url': 'http://www.melskitchencafe.com/the-best-fudgy-brownies/'}
         response = self.api.extract_recipe_from_website(**testArgs)
         self.assertEqual(response.status_code, 200, msg)
 
     def test_parse_ingredients(self):
         """Test the 'parse ingredients' endpoint (POST)"""
         msg = "Response status is not 200"
-        testArgs = {'ingredientList': '3 oz pork shoulder', 'servings': '2', 'includeNutrition': 'false'}
+        testArgs = {'ingredientList': '3 oz pork shoulder', 'servings': '2', 'includeNutrition': False}
         response = self.api.parse_ingredients(**testArgs)
         self.assertEqual(response.status_code, 200, msg)
