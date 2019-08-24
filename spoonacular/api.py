@@ -135,7 +135,7 @@ class API(object):
     def classify_a_grocery_product(self, product):
         """ Given a grocery product title, this endpoint allows
             you to detect what basic ingredient it is.
-            https://market.mashape.com/spoonacular/recipe-food-nutrition#classify-a-grocery-product
+            https://spoonacular.com/food-api/docs#classify-a-grocery-product
         """
         endpoint = "food/products/classify"
         url_json = product
@@ -144,7 +144,7 @@ class API(object):
 
     def classify_cuisine(self, ingredientList, title):
         """ Classify the recipe's cuisine.
-            https://market.mashape.com/spoonacular/recipe-food-nutrition#classify-cuisine
+            https://spoonacular.com/food-api/docs#classify-cuisine
         """
         endpoint = "recipes/cuisine"
         url_query = {"ingredientList": ingredientList, "title": title}
@@ -153,7 +153,7 @@ class API(object):
 
     def classify_grocery_products_batch(self, products):
         """ Given a set of product jsons, get back classified products.
-            https://market.mashape.com/spoonacular/recipe-food-nutrition#classify-grocery-products-(batch)
+            https://spoonacular.com/food-api/docs#classify-grocery-products-(batch)
         """
         endpoint = "food/products/classifyBatch"
         url_json = products
@@ -161,7 +161,7 @@ class API(object):
 
     def convert_amounts(self, ingredientName, targetUnit, sourceAmount=None, sourceUnit=None):
         """ Convert amounts like "2 cups of flour to grams".
-            https://market.mashape.com/spoonacular/recipe-food-nutrition#convert-amounts
+            https://spoonacular.com/food-api/docs#convert-amounts
         """
         endpoint = "recipes/convert"
         url_query = {}
@@ -171,7 +171,7 @@ class API(object):
     def generate_meal_plan(self, diet=None, exclude=None, targetCalories=None, timeFrame=None):
         """ Generate a meal plan with three meals per day (breakfast,
             lunch, and dinner).
-            https://market.mashape.com/spoonacular/recipe-food-nutrition#generate-meal-plan
+            https://spoonacular.com/food-api/docs#generate-meal-plan
         """
         endpoint = "recipes/mealplans/generate"
         url_query = {}
@@ -180,7 +180,7 @@ class API(object):
 
     def guess_nutrition_by_dish_name(self, title):
         """ Guess the macro nutrients of a dish given its title.
-            https://market.mashape.com/spoonacular/recipe-food-nutrition#guess-nutrition-by-dish-name
+            https://spoonacular.com/food-api/docs#guess-nutrition-by-dish-name
         """
         endpoint = "recipes/guessNutrition"
         url_query = {}
@@ -190,7 +190,7 @@ class API(object):
     def map_ingredients_to_grocery_products(self, ingredients, servings):
         """ Map a set of ingredients to products you can buy in
             the grocery store.
-            https://market.mashape.com/spoonacular/recipe-food-nutrition#map-ingredients-to-grocery-products
+            https://spoonacular.com/food-api/docs#map-ingredients-to-grocery-products
         """
         endpoint = "food/ingredients/map"
         url_json = {"ingredients": ingredients, "servings": servings}
@@ -199,7 +199,7 @@ class API(object):
     def match_recipes_to_daily_calories(self, targetCalories, timeFrame):
         """ Find multiple recipes that, when added up reach your
             daily caloric needs.
-            https://market.mashape.com/spoonacular/recipe-food-nutrition#match-recipes-to-daily-calories
+            https://spoonacular.com/food-api/docs#match-recipes-to-daily-calories
         """
         endpoint = "recipes/mealplans/generate"
         url_query = {}
@@ -208,7 +208,7 @@ class API(object):
 
     def quick_answer(self, q):
         """ Answer a nutrition related natural language question.
-            https://market.mashape.com/spoonacular/recipe-food-nutrition#quick-answer
+            https://spoonacular.com/food-api/docs#quick-answer
         """
         endpoint = "recipes/quickAnswer"
         url_query = {}
@@ -217,7 +217,7 @@ class API(object):
 
     def summarize_recipe(self, id):
         """ Summarize the recipe in a short text.
-            https://market.mashape.com/spoonacular/recipe-food-nutrition#summarize-recipe
+            https://spoonacular.com/food-api/docs#summarize-recipe
         """
         endpoint = "recipes/{id}/summary".format(id=id)
         url_query = {}
@@ -226,7 +226,7 @@ class API(object):
 
     def visualize_equipment(self, instructions, defaultCss=None, showBacklink=None, view=None):
         """ Visualize the equipment used to make a recipe.
-            https://market.mashape.com/spoonacular/recipe-food-nutrition#visualize-equipment
+            https://spoonacular.com/food-api/docs#visualize-equipment
         """
         endpoint = "recipes/visualizeEquipment"
         url_query = {"defaultCss": defaultCss, "instructions": instructions, "showBacklink": showBacklink, "view": view}
@@ -235,7 +235,7 @@ class API(object):
 
     def visualize_ingredients(self, ingredientList, servings, defaultCss=None, measure=None, showBacklink=None, view=None):
         """ Visualize ingredients of a recipe.
-            https://market.mashape.com/spoonacular/recipe-food-nutrition#visualize-ingredients
+            https://spoonacular.com/food-api/docs#visualize-ingredients
         """
         endpoint = "recipes/visualizeIngredients"
         url_query = {"defaultCss": defaultCss, "ingredientList": ingredientList, "measure": measure, "servings": servings, "showBacklink": showBacklink, "view": view}
@@ -244,7 +244,7 @@ class API(object):
 
     def visualize_price_breakdown(self, ingredientList, servings, defaultCss=None, mode=None, showBacklink=None):
         """ Visualize the price breakdown of a recipe.
-            https://market.mashape.com/spoonacular/recipe-food-nutrition#visualize-price-breakdown
+            https://spoonacular.com/food-api/docs#visualize-price-breakdown
         """
         endpoint = "recipes/visualizePriceEstimator"
         url_query = {"defaultCss": defaultCss, "ingredientList": ingredientList, "mode": mode, "servings": servings, "showBacklink": showBacklink}
@@ -253,7 +253,7 @@ class API(object):
 
     def visualize_recipe_nutrition(self, ingredientList, servings, defaultCss=None, showBacklink=None):
         """ Visualize a recipe's nutritional information.
-            https://market.mashape.com/spoonacular/recipe-food-nutrition#visualize-recipe-nutrition
+            https://spoonacular.com/food-api/docs#visualize-recipe-nutrition
         """
         endpoint = "recipes/visualizeNutrition"
         url_query = {"defaultCss": defaultCss, "ingredientList": ingredientList, "servings": servings, "showBacklink": showBacklink}
@@ -262,7 +262,7 @@ class API(object):
 
     def visualize_recipe_nutrition_by_id(self, id, defaultCss=None):
         """ Visualize a recipe's nutrition data.
-            https://market.mashape.com/spoonacular/recipe-food-nutrition#visualize-recipe-nutrition-by-id
+            https://spoonacular.com/food-api/docs#visualize-recipe-nutrition-by-id
         """
         endpoint = "recipes/{id}/nutritionWidget".format(id=id)
         url_query = {}
@@ -273,7 +273,7 @@ class API(object):
 
     def autocomplete_ingredient_search(self, query, intolerances=None, metaInformation=None, number=None):
         """ Autocomplete a search for an ingredient.
-            https://market.mashape.com/spoonacular/recipe-food-nutrition#autocomplete-ingredient-search
+            https://spoonacular.com/food-api/docs#autocomplete-ingredient-search
         """
         endpoint = "food/ingredients/autocomplete"
         url_query = {}
@@ -282,7 +282,7 @@ class API(object):
 
     def autocomplete_recipe_search(self, query, number=None):
         """ Autocomplete a partial input to possible recipe names.
-            https://market.mashape.com/spoonacular/recipe-food-nutrition#autocomplete-recipe-search
+            https://spoonacular.com/food-api/docs#autocomplete-recipe-search
         """
         endpoint = "recipes/autocomplete"
         url_query = {}
@@ -291,7 +291,7 @@ class API(object):
 
     def get_comparable_products(self, upc):
         """ Find comparable products to the given one.
-            https://market.mashape.com/spoonacular/recipe-food-nutrition#get-comparable-products
+            https://spoonacular.com/food-api/docs#get-comparable-products
         """
         endpoint = "food/products/upc/{upc}/comparable".format(upc=upc)
         url_query = {}
@@ -300,7 +300,7 @@ class API(object):
 
     def get_dish_pairing_for_wine(self, wine):
         """ Get a dish that goes well with a given wine.
-            https://market.mashape.com/spoonacular/recipe-food-nutrition#get-dish-pairing-for-wine
+            https://spoonacular.com/food-api/docs#get-dish-pairing-for-wine
         """
         endpoint = "food/wine/dishes"
         url_query = {}
@@ -309,7 +309,7 @@ class API(object):
 
     def get_ingredient_substitutes(self, ingredientName):
         """ Get ingredient substitutes by ingredient name.
-            https://market.mashape.com/spoonacular/recipe-food-nutrition#get-ingredient-substitutes
+            https://spoonacular.com/food-api/docs#get-ingredient-substitutes
         """
         endpoint = "food/ingredients/substitutes"
         url_query = {}
@@ -318,7 +318,7 @@ class API(object):
 
     def get_ingredient_substitutes_by_id(self, id):
         """ Search for substitutes for a given ingredient.
-            https://market.mashape.com/spoonacular/recipe-food-nutrition#get-ingredient-substitutes-by-id
+            https://spoonacular.com/food-api/docs#get-ingredient-substitutes-by-id
         """
         endpoint = "food/ingredients/{id}/substitutes".format(id=id)
         url_query = {}
@@ -327,7 +327,7 @@ class API(object):
 
     def get_random_recipes(self, limitLicense=None, number=None, tags=None):
         """ Find random (popular) recipes.
-            https://market.mashape.com/spoonacular/recipe-food-nutrition#get-random-recipes
+            https://spoonacular.com/food-api/docs#get-random-recipes
         """
         endpoint = "recipes/random"
         url_query = {}
@@ -336,7 +336,7 @@ class API(object):
 
     def get_similar_recipes(self, id):
         """ Find recipes which are similar to the given one.
-            https://market.mashape.com/spoonacular/recipe-food-nutrition#get-similar-recipes
+            https://spoonacular.com/food-api/docs#get-similar-recipes
         """
         endpoint = "recipes/{id}/similar".format(id=id)
         url_query = {}
@@ -346,7 +346,7 @@ class API(object):
     def get_wine_description(self, wine):
         """ Get the description of a certain wine, e.g. "malbec",
             "riesling", or "merlot".
-            https://market.mashape.com/spoonacular/recipe-food-nutrition#get-wine-description
+            https://spoonacular.com/food-api/docs#get-wine-description
         """
         endpoint = "food/wine/description"
         url_query = {}
@@ -357,7 +357,7 @@ class API(object):
         """ Find a wine that goes well with a food. Food can be
             a dish name ("steak"), an ingredient name ("salmon"),
             or a cuisine ("italian").
-            https://market.mashape.com/spoonacular/recipe-food-nutrition#get-wine-pairing
+            https://spoonacular.com/food-api/docs#get-wine-pairing
         """
         endpoint = "food/wine/pairing"
         url_query = {}
@@ -367,7 +367,7 @@ class API(object):
     def get_wine_recommendation(self, wine, maxPrice=None, minRating=None, number=None):
         """ Get a specific wine recommendation (concrete product)
             for a given wine, e.g. "merlot".
-            https://market.mashape.com/spoonacular/recipe-food-nutrition#get-wine-recommendation
+            https://spoonacular.com/food-api/docs#get-wine-recommendation
         """
         endpoint = "food/wine/recommendation"
         url_query = {}
@@ -376,7 +376,7 @@ class API(object):
 
     def search_grocery_products_by_upc(self, upc):
         """ Get information about a food product given its UPC.
-            https://market.mashape.com/spoonacular/recipe-food-nutrition#search-grocery-products-by-upc
+            https://spoonacular.com/food-api/docs#search-grocery-products-by-upc
         """
         endpoint = "food/products/upc/{upc}".format(upc=upc)
         url_query = {}
@@ -387,11 +387,22 @@ class API(object):
         """ Find recipes that use as many of the given ingredients
             as possible and have as little as possible missing
             ingredients. This is a whats in your fridge API endpoint.
-            https://market.mashape.com/spoonacular/recipe-food-nutrition#search-recipes-by-ingredients
+            https://spoonacular.com/food-api/docs#search-recipes-by-ingredients
         """
         endpoint = "recipes/findByIngredients"
         url_query = {}
         url_params = {"fillIngredients": fillIngredients, "ingredients": ingredients, "limitLicense": limitLicense, "number": number, "ranking": ranking}
+        return self._make_request(endpoint, method="GET", query_=url_query, params_=url_params)
+
+    def search_recipes_complex(self, **kwargs):
+        """ Search through hundreds of thousands of recipes using advanced
+            filtering and ranking. NOTE: This method combines searching by
+            query, by ingredients, and by nutrients into one endpoint.
+            https://spoonacular.com/food-api/docs#Search-Recipes-Complex
+        """
+        endpoint = "recipes/complexSearch"
+        url_query = {}
+        url_params = {}
         return self._make_request(endpoint, method="GET", query_=url_query, params_=url_params)
 
     def search_site_content(self, query):
@@ -399,7 +410,7 @@ class API(object):
             find everything that you could also find using the
             search suggests on spoonacular.com. This is a suggest
             API so you can send partial strings as queries.
-            https://market.mashape.com/spoonacular/recipe-food-nutrition#search-site-content
+            https://spoonacular.com/food-api/docs#search-site-content
         """
         endpoint = "food/site/search"
         url_query = {}
@@ -411,7 +422,7 @@ class API(object):
     def get_conversation_suggests(self, query, number=None):
         """ This endpoint returns suggestions for things the user
             can say or ask the chat bot.
-            https://market.mashape.com/spoonacular/recipe-food-nutrition#get-conversation-suggests
+            https://spoonacular.com/food-api/docs#get-conversation-suggests
         """
         endpoint = "food/converse/suggest"
         url_query = {}
@@ -423,7 +434,7 @@ class API(object):
             food with the spoonacular chat bot. Use the chat
             suggests endpoint to show your user what he or she
             can say.
-            https://market.mashape.com/spoonacular/recipe-food-nutrition#talk-to-a-chatbot
+            https://spoonacular.com/food-api/docs#talk-to-a-chatbot
         """
         endpoint = "food/converse"
         url_query = {}
@@ -434,7 +445,7 @@ class API(object):
 
     def get_a_random_food_joke(self):
         """ Get a random joke that includes or is about food.
-            https://market.mashape.com/spoonacular/recipe-food-nutrition#get-a-random-food-joke
+            https://spoonacular.com/food-api/docs#get-a-random-food-joke
         """
         endpoint = "food/jokes/random"
         url_query = {}
@@ -445,7 +456,7 @@ class API(object):
         """ Get an analyzed breakdown of a recipe's instructions.
             Each step is enriched with the ingredients and the
             equipment that is used.
-            https://market.mashape.com/spoonacular/recipe-food-nutrition#get-analyzed-recipe-instructions
+            https://spoonacular.com/food-api/docs#get-analyzed-recipe-instructions
         """
         endpoint = "recipes/{id}/analyzedInstructions".format(id=id)
         url_query = {}
@@ -454,7 +465,7 @@ class API(object):
 
     def get_food_information(self, id, amount=None, unit=None):
         """ Get information about a certain food (ingredient).
-            https://market.mashape.com/spoonacular/recipe-food-nutrition#get-food-information
+            https://spoonacular.com/food-api/docs#get-food-information
         """
         endpoint = "food/ingredients/{id}/information".format(id=id)
         url_query = {}
@@ -463,7 +474,7 @@ class API(object):
 
     def get_product_information(self, id):
         """ Get information about a packaged food product.
-            https://market.mashape.com/spoonacular/recipe-food-nutrition#get-product-information
+            https://spoonacular.com/food-api/docs#get-product-information
         """
         endpoint = "food/products/{id}".format(id=id)
         url_query = {}
@@ -472,7 +483,7 @@ class API(object):
 
     def get_random_food_trivia(self):
         """ Returns random food trivia.
-            https://market.mashape.com/spoonacular/recipe-food-nutrition#get-random-food-trivia
+            https://spoonacular.com/food-api/docs#get-random-food-trivia
         """
         endpoint = "food/trivia/random"
         url_query = {}
@@ -481,7 +492,7 @@ class API(object):
 
     def get_recipe_information(self, id, includeNutrition=None):
         """ Get information about a recipe.
-            https://market.mashape.com/spoonacular/recipe-food-nutrition#get-recipe-information
+            https://spoonacular.com/food-api/docs#get-recipe-information
         """
         endpoint = "recipes/{id}/information".format(id=id)
         url_query = {}
@@ -493,7 +504,7 @@ class API(object):
             is equivalent of calling the Get Recipe Information
             endpoint multiple times but is faster. Note that
             each returned recipe counts as one request.
-            https://market.mashape.com/spoonacular/recipe-food-nutrition#get-recipe-information-bulk
+            https://spoonacular.com/food-api/docs#get-recipe-information-bulk
         """
         endpoint = "recipes/informationBulk"
         url_query = {}
@@ -504,7 +515,7 @@ class API(object):
 
     def analyze_a_recipe_search_query(self, q):
         """ Parse a recipe search query to find out its intention.
-            https://market.mashape.com/spoonacular/recipe-food-nutrition#analyze-a-recipe-search-query
+            https://spoonacular.com/food-api/docs#analyze-a-recipe-search-query
         """
         endpoint = "recipes/queries/analyze"
         url_query = {}
@@ -514,7 +525,7 @@ class API(object):
     def analyze_recipe_instructions(self, instructions):
         """ Extract ingredients and equipment from the recipe instruction
             steps.
-            https://market.mashape.com/spoonacular/recipe-food-nutrition#analyze-recipe-instructions
+            https://spoonacular.com/food-api/docs#analyze-recipe-instructions
         """
         endpoint = "recipes/analyzeInstructions"
         url_query = {"instructions": instructions}
@@ -523,7 +534,7 @@ class API(object):
 
     def detect_food_in_text(self, text):
         """ Detect ingredients and dishes in texts.
-            https://market.mashape.com/spoonacular/recipe-food-nutrition#detect-food-in-text
+            https://spoonacular.com/food-api/docs#detect-food-in-text
         """
         endpoint = "food/detect"
         url_query = {"text": text}
@@ -532,7 +543,7 @@ class API(object):
 
     def extract_recipe_from_website(self, url, forceExtraction=None):
         """ Extract recipe data from a recipe blog or Web page.
-            https://market.mashape.com/spoonacular/recipe-food-nutrition#extract-recipe-from-website
+            https://spoonacular.com/food-api/docs#extract-recipe-from-website
         """
         endpoint = "recipes/extract"
         url_query = {}
@@ -541,7 +552,7 @@ class API(object):
 
     def parse_ingredients(self, ingredientList, servings=1, includeNutrition=None):
         """ Extract an ingredient from plain text.
-            https://market.mashape.com/spoonacular/recipe-food-nutrition#parse-ingredients
+            https://spoonacular.com/food-api/docs#parse-ingredients
         """
         endpoint = "recipes/parseIngredients"
         url_query = {"ingredientList": ingredientList, "servings": servings}
