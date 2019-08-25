@@ -394,7 +394,7 @@ class API(object):
         url_params = {"fillIngredients": fillIngredients, "ingredients": ingredients, "limitLicense": limitLicense, "number": number, "ranking": ranking}
         return self._make_request(endpoint, method="GET", query_=url_query, params_=url_params)
 
-    def search_recipes_complex(self, **kwargs):
+    def search_recipes_complex(self, query, **kwargs):
         """ Search through hundreds of thousands of recipes using advanced
             filtering and ranking. NOTE: This method combines searching by
             query, by ingredients, and by nutrients into one endpoint.
@@ -402,7 +402,7 @@ class API(object):
         """
         endpoint = "recipes/complexSearch"
         url_query = {}
-        url_params = {}
+        url_params = {"query": query, **kwargs}
         return self._make_request(endpoint, method="GET", query_=url_query, params_=url_params)
 
     def search_site_content(self, query):

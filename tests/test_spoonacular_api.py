@@ -228,6 +228,13 @@ class TestAPI(unittest.TestCase):
         response = self.api.search_recipes_by_ingredients(**testArgs)
         self.assertEqual(response.status_code, 200, msg)
 
+    def test_search_recipes_complex(self):
+        """Test the 'search recipes complex' endpoint (GET)"""
+        msg = "Response status is not 200"
+        testArgs = {'query': 'pasta', 'cuisine': 'italian', 'excludeCuisine': 'greek'}
+        response = self.api.search_recipes_complex(**testArgs)
+        self.assertEqual(response.status_code, 200, msg)
+
     def test_search_site_content(self):
         """Test the 'search site content' endpoint (GET)"""
         msg = "Response status is not 200"
